@@ -9,8 +9,9 @@ const {
   getuser,
   getuserbyid,
 } = require("../controllers/authController");
+const upload = require("../middlewares/upload");
 
-router.post("/signup", signup);
+router.post("/signup",upload.single('profile'), signup);
 router.post("/login", login);
 router.post("/forgot-password", forgotPassword);
 router.post("/reset-password/:token", resetPassword);

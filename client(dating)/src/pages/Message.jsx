@@ -1,16 +1,20 @@
-import React from 'react'
+import React, { useContext } from 'react'
 import Chat from '../components/Chat'
 import { useParams } from 'react-router-dom'
+import { AuthContext } from '../context/AuthContext'
 
 function Message() {
+    const{user}=useContext(AuthContext)
+    console.log('users',user);
+    
+  
     const {id}=useParams()
-    localStorage.setItem('sentid','68398f0ab32e1cb3833b49a0')
-    const sentid=localStorage.getItem('userId')
-    console.log(sentid);
+   
+
     
   return (
     <div>
-           <Chat receiverId={id} senderId={sentid}/>
+           <Chat receiverId={id} senderId={user?._id}/>
 
     </div>
   )

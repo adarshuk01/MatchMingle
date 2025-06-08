@@ -1,34 +1,36 @@
 import axios from 'axios';
-import React, { useState } from 'react';
+import React, { useContext, useState } from 'react';
 import InputField from '../components/common/InputField'; // Make sure the path is correct
+import Button from '../components/common/Button';
+import { AuthContext } from '../context/AuthContext';
+import { useNavigate } from 'react-router-dom';
 
 function Login() {
+  
   const [email, setemail] = useState('');
   const [password, setpass] = useState('');
   const [error, setError] = useState('');
+   const { login } = useContext(AuthContext);
+   const navigate=useNavigate()
 
-  const login = async (e) => {
-    e.preventDefault();
-    setError('');
-    try {
-      const res = await axios.post('http://localhost:5000/api/auth/login', {
-        email,
-        password,
-      });
-      console.log(res);
-      localStorage.setItem('userId', res.data.user._id);
-      // Navigate or show success
-    } catch (err) {
-      console.error(err);
-      setError('Invalid email or password');
-    }
-  };
+   const handleSubmit = async (e) => {
+        e.preventDefault();
+        try {
+            const res = await login(email,password);
+            alert(res.message||'login success');
+            navigate('/')
+        } catch (err) {
+            alert(err.message || 'login failed');
+        }
+    };
+
+ 
 
   return (
-    <div className="min-h-screen bg-gray-50 flex items-center justify-center px-4">
+    <div className="  flex items-center justify-center  h-[80vh] ">
       <form
-        onSubmit={login}
-        className="bg-white shadow-md rounded-lg p-8 w-full max-w-md"
+        onSubmit={handleSubmit}
+        className="bg-white shadow-md rounded-lg p-6 w-full  max-w-md space-y-2"
       >
         <h2 className="text-2xl font-semibold text-center mb-6">
           Log in to your account
@@ -59,21 +61,16 @@ function Login() {
         )}
 
         <div className="flex justify-end mt-2 text-sm">
-          <a href="#" className="text-blue-500 hover:underline">
+          <a href="#" className="text-red-500 hover:underline">
             Forgot password?
           </a>
         </div>
 
-        <button
-          type="submit"
-          className="mt-6 w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600 transition"
-        >
-          Log in
-        </button>
+        <Button label={'Log in'} />
 
         <p className="text-sm text-center text-gray-600 mt-4">
           Don’t have an account?{' '}
-          <a href="/signup" className="text-blue-500 hover:underline">
+          <a href="/signup" className="text-red-500 hover:underline">
             Sign up
           </a>
         </p>

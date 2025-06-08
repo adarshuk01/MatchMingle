@@ -23,6 +23,7 @@ const authRoutes = require("./routes/auth");
 const chatRoutes = require("./routes/chatRoutes");
 app.use("/api/auth", authRoutes);
 app.use("/api/chat", chatRoutes);
+app.use('/uploads', express.static('uploads'));
 
 // ✅ Import Message model to save chats
 const Message = require("./model/Message");
